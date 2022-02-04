@@ -12,7 +12,7 @@ import {
   Line,
   Option
 } from '../types/form'
-import { getRawValidation, getValidation, parseValidation } from './validation'
+import { getRawValidation, getValidation } from './validation'
 
 type FormData = {
   formData: object
@@ -149,10 +149,10 @@ const parseField = (rawField: Array<any>): Field => {
       field.required = toBool(fieldInfo[2])
       const rawValidation = getRawValidation(fieldInfo)
       if (rawValidation) {
-        const parsedValidation = parseValidation(rawValidation)
+        // const parsedValidation = parseValidation(rawValidation)
         field.options = {
           ...field.options,
-          validateFn: getValidation(parsedValidation)
+          validateFn: getValidation(rawValidation)
         }
       }
       console.log(`field`)
