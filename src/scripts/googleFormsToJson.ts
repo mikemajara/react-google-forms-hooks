@@ -1,5 +1,7 @@
 import cheerio from 'cheerio'
 import fetch from 'isomorphic-unfetch'
+import path from 'path'
+import fs from 'fs'
 
 import {
   Column,
@@ -10,6 +12,7 @@ import {
   Line,
   Option
 } from '../types/form'
+import { getRawValidation, getValidation, parseValidation } from './validation'
 
 type FormData = {
   formData: object
@@ -140,7 +143,22 @@ const parseField = (rawField: Array<any>): Field => {
   field.type = parseFieldType(rawField, fieldId)
 
   switch (field.type) {
-    case 'SHORT_ANSWER':
+    case 'SHORT_ANSWER': {
+      const fieldInfo = rawField[4][0]
+      field.id = toString(fieldInfo[0])
+      field.required = toBool(fieldInfo[2])
+      const rawValidation = getRawValidation(fieldInfo)
+      if (rawValidation) {
+        const parsedValidation = parseValidation(rawValidation)
+        field.options = {
+          ...field.options,
+          validateFn: getValidation(parsedValidation)
+        }
+      }
+      console.log(`field`)
+      console.log(JSON.stringify(field))
+      break
+    }
     case 'LONG_ANSWER': {
       const fieldInfo = rawField[4][0]
       field.id = toString(fieldInfo[0])
@@ -221,6 +239,13 @@ const parseFormData = ({ formData, fbzx }: FormData): GoogleForm => {
   return googleForm
 }
 
+const saveJsonToFile = (filename: string, json: any) => {
+  const filePath = path.resolve(__dirname, filename)
+  fs.writeFile(filePath, JSON.stringify(json), 'utf8', function (err) {
+    if (err) throw err
+  })
+}
+
 export const googleFormsToJson = async (formUrl: string) => {
   assertValidUrl(formUrl)
 
@@ -232,5 +257,7 @@ export const googleFormsToJson = async (formUrl: string) => {
   }
 
   const formData = extractFormData(html)
+  saveJsonToFile('form-raw.json', formData)
+
   return parseFormData(formData)
 }
