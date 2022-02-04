@@ -1,1 +1,14 @@
-{"fvv":1,"pageHistory":0,"fbzx":"-2469288781648861763","action":"e/1FAIpQLSfcLIVuQX-BJGTAfvrDYoDoXVmYNtN0aNcoAR5aB8RaDlOV3g","title":"Text form","description":"Text form test variables","fields":[{"label":"Contains","description":" \\w+","type":"SHORT_ANSWER","id":"1747824995","required":false,"options":{"validateFn":["v","/.*\\w+.*/.test(v)","'Invalid input'"]}},{"label":"Doesn't contain","description":" \\w+","type":"SHORT_ANSWER","id":"70812815","required":false,"options":{"validateFn":["v","!/.*\\w+.*/.test(v)","'Invalid input'"]}},{"label":"Matches","description":"\\d+","type":"SHORT_ANSWER","id":"2117227994","required":false,"options":{"validateFn":["v","/\\d+/.test(v)","'Invalid input'"]}},{"label":"Doesn't match","description":"\\d+","type":"SHORT_ANSWER","id":"908771392","required":false,"options":{"validateFn":["v","!/\\d+/.test(v)","'Invalid input'"]}}],"fieldsOrder":{"70812815":1,"908771392":3,"1747824995":0,"2117227994":2}}
+{
+  "fvv": 1,
+  "pageHistory": 0,
+  "fbzx": "4952852685938529181",
+  "action": "e/1FAIpQLSfrvGO387g-sITixcxfRdTCc2pzVbP6qpKKKx4Z3dHRrGimsQ",
+  "title": "Paragraph form",
+  "description": "Text form test variables",
+  "fields": [
+    { "label": "Maximum character count", "description": "280", "type": "LONG_ANSWER", "id": "1747824995", "required": false, "options": { "validateFn": ["v", "v.length < 280", "'Invalid input'"] } },
+    { "label": "Minimum character count", "description": "5", "type": "LONG_ANSWER", "id": "119594498", "required": false, "options": { "validateFn": ["v", "v.length > 5", "'Invalid input'"] } },
+    { "label": "Regex contains", "description": "\\w+", "type": "LONG_ANSWER", "id": "1706830364", "required": false, "options": { "validateFn": ["v", "/.*\\w+.*/.test(v)", "'Invalid input'"] } }
+  ],
+  "fieldsOrder": { "119594498": 1, "1706830364": 2, "1747824995": 0 }
+}
