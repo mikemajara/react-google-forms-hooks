@@ -9,8 +9,13 @@ const saveJsonToFile = (filename, json) => {
   })
 }
 
+// numbers: https://forms.gle/NfoppNLnDTPqY5NJA
+// text: https://forms.gle/ftv294SEZV96e9DJ8
+// length: https://forms.gle/1DH7GSPiNsqVFRZK6
+// regex: https://forms.gle/gHwYkxE3czR1QT7x9
+
 const run = async () => {
-  const result = await googleFormsToJson('https://forms.gle/1DH7GSPiNsqVFRZK6')
+  const result = await googleFormsToJson('https://forms.gle/gHwYkxE3czR1QT7x9')
 
   saveJsonToFile('form.json', result)
 }

@@ -40,6 +40,13 @@ export const parseLengthValidation = (rawValidation: Array<any>) => ({
   message: rawValidation[MESSAGE_POS] || 'Invalid input'
 })
 
+export const parseRegexValidation = (rawValidation: Array<any>) => ({
+  type: VALIDATION_TYPES[rawValidation[TYPE_POS]],
+  condition: (rawValidation[CONDITION_POS] + 1) % 300,
+  values: rawValidation[VALUES_POS],
+  message: rawValidation[MESSAGE_POS] || 'Invalid input'
+})
+
 const getNumberValidation = ({
   condition,
   values,
@@ -109,6 +116,27 @@ const getLengthValidation = ({
   return fnStringArgs
 }
 
+const getRegexValidation = ({
+  condition,
+  values,
+  message
+}: {
+  condition: number
+  values: Array<any>
+  message: string
+}) => {
+  const [val1] = values ? values : [undefined]
+
+  const msg = sanitizeMessage(message)
+  const fnStringArgs = [
+    [`v`, `/.*${val1}.*/.test(v)`, `'${msg}'`],
+    [`v`, `!/.*${val1}.*/.test(v)`, `'${msg}'`],
+    [`v`, `/${val1}/.test(v)`, `'${msg}'`],
+    [`v`, `!/${val1}/.test(v)`, `'${msg}'`]
+  ][condition]
+  return fnStringArgs
+}
+
 export const getValidation = (rawValidation: Array<any>) => {
   const type = VALIDATION_TYPES[rawValidation[TYPE_POS]]
 
@@ -119,8 +147,8 @@ export const getValidation = (rawValidation: Array<any>) => {
       return getTextValidation(parseTextValidation(rawValidation))
     case 'LENGTH':
       return getLengthValidation(parseLengthValidation(rawValidation))
-    // case 'REGEX':
-    //   return getRegexValidation(parseRegexValidation(rawValidation))
+    case 'REGEX':
+      return getRegexValidation(parseRegexValidation(rawValidation))
     default:
       return undefined
   }
