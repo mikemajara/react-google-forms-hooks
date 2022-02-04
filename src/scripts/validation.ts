@@ -40,16 +40,16 @@ const getNumberValidation = (
   // console.log('condition', condition)
   const msg = sanitizeMessage(message)
   const fnStringArgs = [
-    `(v) => v > ${val1} || '${msg}'`,
-    `(v) => v >= ${val1} || '${msg}'`,
-    `(v) => v < ${val1} || '${msg}'`,
-    `(v) => v <= ${val1} || '${msg}'`,
-    `(v) => v == ${val1} || '${msg}'`,
-    `(v) => v != ${val1} || '${msg}'`,
-    `(v) => (v > ${val1} && v < ${val2}) || '${msg}'`,
-    `(v) => (v < ${val1} && v > ${val2}) || '${msg}'`,
-    `(v) => typeof v === 'number' || '${msg}'`,
-    `(v) => (typeof v === 'number' && Math.round(v) == v) || '${msg}'`
+    [`v`, `v > ${val1}`, `'${msg}'`],
+    [`v`, `v >= ${val1}`, `'${msg}'`],
+    [`v`, `v < ${val1}`, `'${msg}'`],
+    [`v`, `v <= ${val1}`, `'${msg}'`],
+    [`v`, `v == ${val1}`, `'${msg}'`],
+    [`v`, `v != ${val1}`, `'${msg}'`],
+    [`v`, `(v > ${val1} && v < ${val2})`, `'${msg}'`],
+    [`v`, `(v < ${val1} && v > ${val2})`, `'${msg}'`],
+    [`v`, `typeof v === 'number'`, `'${msg}'`],
+    [`v`, `(typeof v === 'number' && Math.round(v) == v)`, `'${msg}'`]
   ][condition]
   return fnStringArgs
 }

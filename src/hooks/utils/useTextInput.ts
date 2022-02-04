@@ -15,15 +15,22 @@ export default (
   const error = context!.formState.errors[field.id]
 
   const register = (options?: RegisterOptions) => {
-    let validate = {}
+    let validationFn = undefined
     if (field.options?.validateFn) {
-      const rule = eval(field.options?.validateFn)
-      validate = { rule }
+      const [param, fnBody, message] = field.options?.validateFn
+      if (field.required) {
+        validationFn = eval(`(${param}) => ${fnBody} || ${message}`)
+      } else {
+        validationFn = eval(
+          `(${param}) => !${param} || ${fnBody} || ${message}`
+        )
+      }
     }
+    console.log(validationFn)
     return context!.register(id, {
-      required: field.required,
+      required: field.required && 'Required',
       ...options,
-      validate
+      validate: validationFn
     })
   }
 
