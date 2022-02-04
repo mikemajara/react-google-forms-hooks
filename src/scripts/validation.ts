@@ -27,6 +27,8 @@ export const parseValidation = (rawValidation: Array<any>) => ({
   message: rawValidation[MESSAGE_POS] || 'Invalid input'
 })
 
+const sanitizeMessage = (msg: string) => msg.replace("'", "\\'")
+
 const getNumberValidation = (
   condition: number,
   values: Array<any>,
@@ -36,7 +38,7 @@ const getNumberValidation = (
   const [val1, val2] = values ? values : [undefined, undefined]
   // console.log('values', values, val1, val2)
   // console.log('condition', condition)
-  const msg = message
+  const msg = sanitizeMessage(message)
   const fnStringArgs = [
     `(v) => v > ${val1} || '${msg}'`,
     `(v) => v >= ${val1} || '${msg}'`,
