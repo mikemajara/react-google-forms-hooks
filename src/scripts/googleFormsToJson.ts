@@ -1,9 +1,15 @@
 import cheerio from 'cheerio'
 import fetch from 'isomorphic-unfetch'
-import path from 'path'
-import fs from 'fs'
 
-import { Column, CustomizableOption, Field, FieldsOrder, GoogleForm, Line, Option } from '../types/form'
+import {
+  Column,
+  CustomizableOption,
+  Field,
+  FieldsOrder,
+  GoogleForm,
+  Line,
+  Option
+} from '../types/form'
 import { getRawValidation, getValidation } from './validation'
 
 type FormData = {
@@ -20,7 +26,13 @@ const assertValidUrl = (formUrl: string): void => {
   const url = new URL(formUrl)
 
   if (!googleFormsHosts.includes(url.host)) {
-    throw new Error(`Invalid google forms host. ${url.host} is expected to be ${googleFormsHosts.join(', ').replace(/, ([^,]*)$/, ' or $1')}.`)
+    throw new Error(
+      `Invalid google forms host. ${
+        url.host
+      } is expected to be ${googleFormsHosts
+        .join(', ')
+        .replace(/, ([^,]*)$/, ' or $1')}.`
+    )
   }
 
   if (url.host === googleFormsHosts[0] && !url.pathname.endsWith('/viewform')) {
@@ -70,7 +82,14 @@ const parseGridMultiSelect = (rawField: Array<object>): 1 | 0 => {
 }
 
 const parseFieldType = (rawField: Array<object>, fieldId: number) => {
-  const fieldTypes = ['SHORT_ANSWER', 'LONG_ANSWER', 'RADIO', 'DROPDOWN', 'CHECKBOX', 'LINEAR'] as const
+  const fieldTypes = [
+    'SHORT_ANSWER',
+    'LONG_ANSWER',
+    'RADIO',
+    'DROPDOWN',
+    'CHECKBOX',
+    'LINEAR'
+  ] as const
 
   if (fieldId === 7) {
     if (parseGridMultiSelect(rawField) === 1) {
@@ -90,7 +109,9 @@ const parseOptions = (options: Array<object>): Array<Option> => {
   return options.map((rawOption) => ({ label: rawOption[0] }))
 }
 
-const parseCustomizableOptions = (options: Array<object>): Array<CustomizableOption> => {
+const parseCustomizableOptions = (
+  options: Array<object>
+): Array<CustomizableOption> => {
   return options.map((rawOption) => ({
     label: rawOption[0],
     custom: rawOption[4] === 1
@@ -189,7 +210,9 @@ const parseField = (rawField: Array<any>): Field => {
   return field
 }
 
-const parseFields = (rawFields: Array<any>): { fields: Array<Field>; fieldsOrder: FieldsOrder } => {
+const parseFields = (
+  rawFields: Array<any>
+): { fields: Array<Field>; fieldsOrder: FieldsOrder } => {
   const fieldsOrder = {}
 
   const fields = rawFields.map((rawField: Array<any>, i: number) => {
@@ -218,13 +241,6 @@ const parseFormData = ({ formData, fbzx }: FormData): GoogleForm => {
   return googleForm
 }
 
-const saveJsonToFile = (filename: string, json: any) => {
-  const filePath = path.resolve(__dirname, filename)
-  fs.writeFile(filePath, JSON.stringify(json), 'utf8', function (err) {
-    if (err) throw err
-  })
-}
-
 export const googleFormsToJson = async (formUrl: string) => {
   assertValidUrl(formUrl)
 
@@ -236,7 +252,6 @@ export const googleFormsToJson = async (formUrl: string) => {
   }
 
   const formData = extractFormData(html)
-  saveJsonToFile('form-raw.json', formData)
 
   return parseFormData(formData)
 }
