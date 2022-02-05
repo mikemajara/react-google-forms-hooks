@@ -26,7 +26,7 @@ export default (
         )
       }
     }
-    console.log(validationFn)
+
     return context!.register(id, {
       required: field.required && 'Required',
       ...options,

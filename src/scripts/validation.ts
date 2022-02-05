@@ -56,10 +56,8 @@ const getNumberValidation = ({
   values: Array<any>
   message: string
 }) => {
-  // if (values !== undefined)
   const [val1, val2] = values ? values : [undefined, undefined]
-  // console.log('values', values, val1, val2)
-  // console.log('condition', condition)
+
   const msg = sanitizeMessage(message)
   const fnStringArgs = [
     [`v`, `v > ${val1}`, `'${msg}'`],

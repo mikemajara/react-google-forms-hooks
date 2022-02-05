@@ -10,8 +10,7 @@ const resolveField = (id: string, form: GoogleForm) => {
   }
 
   const field = form.fields[fieldIndex]
-  // console.log(`form.fields`)
-  // console.log(form.fields)
+
   return field
 }
 
