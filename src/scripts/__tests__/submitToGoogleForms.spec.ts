@@ -4,6 +4,7 @@ import { submitToGoogleForms } from '../submitToGoogleForms'
 
 describe('submitToGoogleForms', () => {
   const stubForm: GoogleForm = {
+    title: 'unknown',
     action: 'action',
     fvv: 0,
     pageHistory: 0,

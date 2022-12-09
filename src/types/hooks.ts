@@ -2,7 +2,9 @@ import {
   UseFormReturn,
   UseFormRegisterReturn,
   RegisterOptions,
-  FieldError
+  FieldError,
+  FieldErrorsImpl,
+  Merge
 } from 'react-hook-form'
 
 import {
@@ -69,11 +71,11 @@ export type UseGridReturn = {
 }
 
 export type Error = {
-  error?: FieldError
+  error?: FieldError | Merge<FieldError, FieldErrorsImpl<any>>
 }
 
 export type GridErrors = {
-  [fieldId: string]: FieldError
+  [fieldId: string]: FieldError | Merge<FieldError, FieldErrorsImpl<any>>
 }
 
 export type Errors = {
